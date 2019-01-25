@@ -1,0 +1,56 @@
+body{
+	font-family: "Source Sans Pro", Helvetica, sans-serif;
+}
+
+a {
+		-moz-transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+		-webkit-transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+		-o-transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+		-ms-transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+		transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+		/*border-bottom: dotted 1px;*/
+		color: #267CB9;
+		text-decoration: none;
+	}
+
+		a:hover {
+			border-bottom-color: transparent;
+			color: #267CB9 !important;
+			text-decoration: none;
+		}
+
+.label{
+	padding-left: 4px;
+}
+
+#button_block{
+	width: 90%;
+}
+
+#right_region{
+	width:90%;
+	float: right;
+}
+.left_region{
+	width: 9%;
+	display: inline-block;
+	margin-top: 210px;
+}
+
+.left_region p{
+	text-align: right;
+	font-size: 20px;
+	-webkit-margin-before: 0em;
+	-webkit-margin-after: 0em;
+	padding-bottom: 12px;
+	padding-top: 5px;
+}
+.wavesurfer-region{
+	height: 5px !important; 
+}
+#s_song, #s_model{
+	display: inline-block;
+}
+#waveform-timeline{
+	padding-top: 50px;
+}

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+		<meta charset="utf-8"> 
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/1.2.3/wavesurfer.min.js"></script>
+		<script type="text/javascript" src="plugin/wavesurfer-regions.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/1.2.3/plugin/wavesurfer.timeline.min.js"></script>
+		<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+		<link rel="stylesheet" href="css/index.css"> 
+		<title>Wav2Midi Demo</title>
+	</head>
+	<body>
+		<center><h1>Wav2Midi Demo Page</h1>
+		<center><h2>Deepest S5 Project</h2>
+		<p style="width: 60%">
+		Kyoyun Choi, Jongho Choi<br>
+		Deepest @ Seoul National Univ.<br>
+		</i>
+		<a href="https://github.com/sweetcocoa/deepest_wav2midi" class="fab fa-github"><span class="label">Github</span></a>
+		</p>
+		<!-- <p style="width: 60%">This page further demostrates the instrument prediction result trained on <a href="">Musescore Dataset</a>. Visit <a href="https://github.com/biboamy/instrument-streaming">project website</a> for detailed information.</p> -->
+		<div id='model_choose'>
+			<select id="s_model">
+				<option value="model">OnsetsAndFrame</option>
+			</select>
+			<select id="s_song">
+				<option value="transcendental_etude_no1">Transcendental Etude No. 1, "Preludio" - Franz Liszt</option>		
+				<option value="etude_op_10_no_1">Etude Op. 10 No. 1 - Chopin</option>		
+				<!-- <option value="make_you">Make You Feel My Love - Adele</option>		 -->
+				<!--<option value="fly_me">Fly Me To The Moon - Frank Sinatra</option>-->
+			</select>
+			<button onclick="togglePlay()">Play/Pause</button></br>
+			<p style="color: red">(It may take time to load the audio)</p>
+		</div>
+		
+		<div id='button_block'>
+			<div id='right_region'>
+				<div id="waveform-timeline"></div>
+				<div id="waveform"></div>
+			</div>
+		</div>
+		</center>
+	</body>
+	<script type="text/javascript">
+		var wavesurfer = WaveSurfer.create({
+			container: '#waveform',
+			waveColor: '#267CB9',
+			progressColor: '#00008B',
+		});
+		//create wave form
+
+		$("#s_model").val('model');
+		load_song('transcendental_etude_no1')
+
+		$('#s_song').on('change', function() {
+			load_song(this.value)
+		})
+
+		function togglePlay(){
+			wavesurfer.playPause()
+		}
+
+		function load_song(song){
+			name = song
+			wavesurfer.load('mp3/'+song+'.mp3');
+			wavesurfer.on('ready', function () {
+				if (song==name){
+					console.log(song)
+					var timeline = Object.create(WaveSurfer.Timeline);
+					timeline.init({
+					   	wavesurfer: wavesurfer,
+					    container: '#waveform-timeline'
+					});
+					
+					show_result($( "#s_model" ).val(),song)
+				}
+			});
+		}
+
+		function show_result(model,name){
+			
+			wavesurfer.clearRegions()
+			$.getJSON('json/'+model+'/'+name+'/'+'notes.json', function(data) {         
+						for (j in data) {
+						    wavesurfer.addRegion({start: data[j]['start'], end: data[j]['end'], top: 140+data[j]['pitch_reverse']*5, color: 'hsla(0, 0%, 0%, 0.4)'});
+						}
+					});
+		}
+
+		$( "wave" ).first().css( "height", 550 );
+
+	</script>
+</html> 
