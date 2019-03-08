@@ -16,23 +16,23 @@
 		<p style="width: 60%">
 		Kyoyun Choi, Jongho Choi<br>
 		Deepest @ Seoul National Univ.<br>
-		</i>
+		</p>
 		<a href="https://github.com/sweetcocoa/deepest_wav2midi" class="fab fa-github"><span class="label">Github</span></a>
 		</p>
-		<!-- <p style="width: 60%">This page further demostrates the instrument prediction result trained on <a href="">Musescore Dataset</a>. Visit <a href="https://github.com/biboamy/instrument-streaming">project website</a> for detailed information.</p> -->
 		<div id='model_choose'>
 			<select id="s_model">
-				<option value="model">OnsetsAndFrame</option>
+				<option value="model">OnsetsAndFrames</option>
 			</select>
 			<select id="s_song">
-				<option value="transcendental_etude_no1">Transcendental Etude No. 1, "Preludio" - Franz Liszt</option>		
-				<option value="etude_op_10_no_1">Etude Op. 10 No. 1 - Chopin</option>		
-				<!-- <option value="make_you">Make You Feel My Love - Adele</option>		 -->
-				<!--<option value="fly_me">Fly Me To The Moon - Frank Sinatra</option>-->
+				<option value="groundtruth-wav">groundtruth-wav</option>
+				<option value="groundtruth">groundtruth</option>
+				<option value="kyoyun">kyoyun</option>
+				<option value="jongho">jongho</option>
+				<option value="jongho_old">jongho_old</option>
 			</select>
-			<button onclick="togglePlay()">Play/Pause</button></br>
+			<button onclick="togglePlay()">Play/Pause</button><br>
 			<p style="color: red">(It may take time to load the audio)</p>
-		</div>
+		</div>	
 		
 		<div id='button_block'>
 			<div id='right_region'>
@@ -40,24 +40,26 @@
 				<div id="waveform"></div>
 			</div>
 		</div>
-		</center>
+		</center></center>
 	</body>
 	<script type="text/javascript">
 		var wavesurfer = WaveSurfer.create({
 			container: '#waveform',
 			waveColor: '#267CB9',
 			progressColor: '#00008B',
+			barHeight: 10,
 		});
 		//create wave form
 
 		$("#s_model").val('model');
-		load_song('transcendental_etude_no1')
+		load_song('groundtruth-wav')
 
 		$('#s_song').on('change', function() {
 			load_song(this.value)
 		})
 
 		function togglePlay(){
+			wavesurfer.params.barHeight=10;
 			wavesurfer.playPause()
 		}
 
@@ -65,6 +67,7 @@
 			name = song
 			wavesurfer.load('mp3/'+song+'.mp3');
 			wavesurfer.on('ready', function () {
+				wavesurfer.params.barHeight=10;  
 				if (song==name){
 					console.log(song)
 					var timeline = Object.create(WaveSurfer.Timeline);
